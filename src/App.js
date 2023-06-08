@@ -1,8 +1,11 @@
 import './App.css';
 import React, { useState } from 'react';
 import Title from './components/Title';
+import Modal from './components/Modal';
+import EventList from './components/EventList';
 
 function App() {
+  const [showModal, setShowModal] = useState(false);
   const [showEvents, setShowEvents] = useState(true);
   const [events, setEvents] = useState([
     {id: 1, title: "Birthday"},
@@ -10,10 +13,14 @@ function App() {
     {id: 3, title: "Stream"}
   ]);
 
-  const handleClick = id => {
-    setEvents((prev) => prev.filter(event => event.id !== id));
-    console.log(id);
-  };
+	const handleDelete = id => {
+		setEvents((prev) => prev.filter(event => event.id !== id));
+		console.log(id);
+	};
+
+  const handleModalClose = () => {
+    setShowModal(false);
+  }
 
   const subtitle = "All of the possible events of the kingdom.";
 
@@ -31,12 +38,18 @@ function App() {
           <button onClick={() => setShowEvents(true)}>show events</button>
         </div>
       )}
-      {showEvents && events.map((event, index) => (
-        <React.Fragment key={event.id}>
-          <h2>{index} - {event.title}</h2>
-          <button onClick={() => handleClick(event.id)}>delete</button>
-        </React.Fragment>
-      ))}
+      {showEvents && <EventList events={events} handleDelete={handleDelete} />}
+
+      {showModal && 
+        <Modal handleClose={handleModalClose} isSalesModal={true}>
+          <h2>10% off your next soul.</h2>
+          <p>Use code NOPEROPE at checkout.</p>
+        </Modal>
+      }
+
+      <br />
+      <br />
+      <button onClick={() => setShowModal(true)}>Get Coupon Code</button>
     </div>
   );
 }
