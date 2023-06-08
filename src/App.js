@@ -1,5 +1,6 @@
 import './App.css';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import Title from './components/Title';
 
 function App() {
   const [showEvents, setShowEvents] = useState(true);
@@ -14,10 +15,12 @@ function App() {
     console.log(id);
   };
 
-  console.log(showEvents);
+  const subtitle = "All of the possible events of the kingdom.";
 
   return (
     <div className="App">
+      <Title title="Mario Kingdom Events" subtitle={subtitle} />
+
       {showEvents && (
         <div>
           <button onClick={() => setShowEvents(false)}>hide events</button>
@@ -29,10 +32,10 @@ function App() {
         </div>
       )}
       {showEvents && events.map((event, index) => (
-        <div key={event.id}>
+        <React.Fragment key={event.id}>
           <h2>{index} - {event.title}</h2>
           <button onClick={() => handleClick(event.id)}>delete</button>
-        </div>
+        </React.Fragment>
       ))}
     </div>
   );
